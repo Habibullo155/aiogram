@@ -3,11 +3,10 @@ import os
 import requests
 
 from aiogram import Bot, Dispatcher, types
-from aiogram.filters import CommandStart, Command
+from aiogram.filters import CommandStart
 from dotenv import find_dotenv, load_dotenv
 from bs4 import BeautifulSoup
 from datetime import datetime
-import time
 
 
 load_dotenv(find_dotenv())
@@ -24,12 +23,7 @@ def send_add(_bot, message):
 
 
 @dp.message(CommandStart())
-async def start_command(message: types.Message) -> None:
-    await message.answer('it\'s begin')
-
-
-@dp.message(Command('go'))
-async def say_hi(message: types.Message):
+async def say_hi(message: types.Message) ->None:
     if message.from_user.id == <user_id>:
         await bot.send_message(chat_id=message.chat.id, text='bot working')
         while True:
@@ -47,7 +41,6 @@ async def say_hi(message: types.Message):
                         a = div.find('a', class_='news_element_image', href=True)
                         href = ('https://allboxing.ru/' + a.get('href'))
                         list_of_hrefs.append(href)
-                hrefs = []
                 [hrefs.append(x) for x in list_of_hrefs if x not in hrefs]
                 hrefs = hrefs[::-1]
                 for i in range(len(hrefs)):
@@ -69,7 +62,6 @@ async def say_hi(message: types.Message):
                                 await bot.send_photo('-1001942224091', '{}'.format(img_result),
                                                      caption=f'<b>{title.text}</b> \n {content_replaced} \n {hash_[j]}',
                                                      parse_mode='html')
-                                time.sleep(3)
                             except:
                                 img_ = content.find('a', class_='news_element_image', href=True)
                                 img_result_ = img_.get('href')
@@ -87,7 +79,7 @@ async def say_hi(message: types.Message):
                     i += 1
                 hrefs.clear()
                 j += 1
-            time.sleep(3600)
+            await asyncio.sleep(3600)
 
     else:
         send_add(_bot=bot, message=message)
